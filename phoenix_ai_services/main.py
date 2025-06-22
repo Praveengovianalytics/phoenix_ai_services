@@ -10,6 +10,9 @@ from pydantic import BaseModel
 from phoenix_ai_services.rag_controller import summarize_with_config
 from phoenix_ai_services.registry import EndpointRegistry
 
+from tool_controller import run_tool
+
+
 # Enable nested event loop
 nest_asyncio.apply()
 app = FastAPI(title="Phoenix AI Services - RAG Framework")

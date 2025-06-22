@@ -66,6 +66,117 @@ jobs:
             git push origin main --tags
           fi
 
+      - name: Generate and Update CHANGELOG with OpenAI Summary in Table
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Get latest tag
+          latest_tag=$(git describe --tags --abbrev=0 || echo "")
+          echo "🔖 Previous tag: $latest_tag"
+
+          # Capture date, time, and version
+          current_time=$(TZ="Asia/Singapore" date "+%Y-%m-%d %H:%M:%S")
+          version_output=$(poetry version -s)
+          new_version=$(echo "$version_output")
+
+          # Get list of authors and commits since last tag
+          if [ -z "$latest_tag" ]; then
+            git log --pretty=format:"%an" | sort | uniq > authors.txt
+            git log --pretty=format:"- %s" > changes.txt
+          else
+            git log "$latest_tag"..HEAD --pretty=format:"%an" | sort | uniq > authors.txt
+            git log "$latest_tag"..HEAD --pretty=format:"- %s" > changes.txt
+          fi
+
+          echo "📋 Git commits:"
+          cat changes.txt
+
+          # Generate changelog with OpenAI
+          cat <<EOF > generate_changelog.py
+
+      - name: Generate and Update CHANGELOG with OpenAI Summary in Table
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Get latest tag
+          latest_tag=$(git describe --tags --abbrev=0 || echo "")
+          echo "🔖 Previous tag: $latest_tag"
+
+          # Capture date, time, and version
+          current_time=$(TZ="Asia/Singapore" date "+%Y-%m-%d %H:%M:%S")
+          version_output=$(poetry version -s)
+          new_version=$(echo "$version_output")
+
+          # Get list of authors and commits since last tag
+          if [ -z "$latest_tag" ]; then
+            git log --pretty=format:"%an" | sort | uniq > authors.txt
+            git log --pretty=format:"- %s" > changes.txt
+          else
+            git log "$latest_tag"..HEAD --pretty=format:"%an" | sort | uniq > authors.txt
+            git log "$latest_tag"..HEAD --pretty=format:"- %s" > changes.txt
+          fi
+
+          echo "📋 Git commits:"
+          cat changes.txt
+
+          # Generate changelog with OpenAI
+          cat <<EOF > generate_changelog.py
+
+          import openai
+
+          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
+
+          with open("changes.txt") as f:
+              diff_summary = f.read()
+
+          prompt = f"Summarize the following git commits into clear, professional changelog release notes for a Python library in bullet points:\\n\\n{diff_summary}"
+
+          response = openai.ChatCompletion.create(
+              model="gpt-4",
+              messages=[
+                  {"role": "system", "content": "You are an open source release manager writing clear changelog notes."},
+                  {"role": "user", "content": prompt}
+              ],
+              temperature=0.4,
+              max_tokens=300
+          )
+
+          summary = response['choices'][0]['message']['content']
+
+          with open("authors.txt") as f:
+              authors = ', '.join([line.strip() for line in f.readlines()])
+
+          changelog_entry = f"""
+          ### 🚀 Version {new_version} — {current_time}
+
+          | Field     | Details |
+          |-----------|---------|
+          | **Version** | {new_version} |
+          | **Date**    | {current_time} |
+          | **Authors** | {authors} |
+
+          #### 🔧 Changes:
+          {summary}
+          """
+
+          print("📚 Generated Changelog Entry:")
+          print(changelog_entry)
+
+          with open("CHANGELOG.md", "a") as f:
+              f.write("\\n" + changelog_entry + "\\n")
+          EOF
+
+                    python3 generate_changelog.py
+
+      - name: Commit CHANGELOG
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "📚 Update CHANGELOG for v${{ new_version }}"
+          git push origin main
+
+          
       - name: Build with Poetry
         run: poetry build
 
