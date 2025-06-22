@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from fastapi import HTTPException
-from tool_sandbox import safe_eval
+from phoenix_ai_services.tool_sandbox import safe_eval
 
 
 def run_tool(tool_name: str, input_data: str):
