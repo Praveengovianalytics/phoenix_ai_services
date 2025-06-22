@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-  release:
-    types: [published]
 
 permissions:
   contents: write
@@ -29,10 +27,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install black isort poetry
 
-      - name: Lint Check (black and isort)
+      - name: Auto-format with black and isort
         run: |
-          black . --check
-          isort . --check-only
+          black .
+          isort .
+
+      - name: Commit formatting changes if any
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "♻️ Auto-format with black and isort"
+          git push origin main
 
       - name: Configure Poetry & Token
         run: |
