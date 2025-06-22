@@ -6,10 +6,10 @@ import uvicorn
 from fastapi import Body, FastAPI, HTTPException, Query
 from fastapi_mcp import FastApiMCP
 from pydantic import BaseModel
-from tool_controller import run_tool
 
 from phoenix_ai_services.rag_controller import summarize_with_config
 from phoenix_ai_services.registry import EndpointRegistry
+from phoenix_ai_services.tool_controller import run_tool
 
 # Enable nested event loop
 nest_asyncio.apply()
