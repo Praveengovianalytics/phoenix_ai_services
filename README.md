@@ -3,6 +3,18 @@
 
 Unified agentic framework to run dynamic RAG APIs and utility tools like calculator, date, and python evaluator.
 
+# phoenix_ai_services
+
+[![PyPI - Version](https://img.shields.io/pypi/v/phoenix-ai-services.svg)](https://pypi.org/project/phoenix-ai-services/)
+[![Code Style - Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python Version](https://img.shields.io/pypi/pyversions/phoenix-ai-services.svg)](https://pypi.org/project/phoenix-ai-services/)
+[![License](https://img.shields.io/pypi/l/phoenix-ai-services)](https://github.com/Praveengovianalytics/phoenix_ai_services/LICENSE)
+
+---
+
+> `phoenix_ai_services` is a modular Python package for managing RAG endpoints, tool-based APIs, and plug-and-play AI utilities using FastAPI & Poetry. It supports RESTful control for registering, updating, and deleting endpoints for RAG, tools, and more.
+
+
 ## 🔧 Setup
 
 ```bash
