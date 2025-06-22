@@ -1,0 +1,60 @@
+nohup: ignoring input
+INFO:     Will watch for changes in these directories: ['/workspaces/phoenix_ai_services']
+INFO:     Uvicorn running on http://127.0.0.1:8004 (Press CTRL+C to quit)
+INFO:     Started reloader process [64697] using StatReload
+🚀 Starting Phoenix AI Services at http://localhost:8003
+INFO:     Started server process [64710]
+INFO:     Started server process [64710]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8003): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+Task exception was never retrieved
+future: <Task finished name='Task-1' coro=<Server.serve() done, defined at /workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/server.py:64> exception=SystemExit(1)>
+Traceback (most recent call last):
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/server.py", line 161, in startup
+    server = await loop.create_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/asyncio/base_events.py", line 1559, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8003): address already in use
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/codespace/.python/current/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+    self.run()
+  File "/home/codespace/.python/current/lib/python3.12/threading.py", line 1010, in run
+    self._target(*self._args, **self._kwargs)
+  File "/workspaces/phoenix_ai_services/phoenix_ai_services/main.py", line 111, in run_server
+    uvicorn.run(app, host="0.0.0.0", port=8003)
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/main.py", line 587, in run
+    server.run()
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/server.py", line 62, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/nest_asyncio.py", line 30, in run
+    return loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/nest_asyncio.py", line 92, in run_until_complete
+    self._run_once()
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/nest_asyncio.py", line 133, in _run_once
+    handle._run()
+  File "/home/codespace/.python/current/lib/python3.12/asyncio/events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/codespace/.python/current/lib/python3.12/asyncio/tasks.py", line 396, in __wakeup
+    self.__step()
+  File "/home/codespace/.python/current/lib/python3.12/asyncio/tasks.py", line 303, in __step
+    self.__step_run_and_handle_result(exc)
+  File "/home/codespace/.python/current/lib/python3.12/asyncio/tasks.py", line 314, in __step_run_and_handle_result
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/server.py", line 79, in serve
+    await self.startup(sockets=sockets)
+  File "/workspaces/phoenix_ai_services/venv/lib/python3.12/site-packages/uvicorn/server.py", line 171, in startup
+    sys.exit(1)
+SystemExit: 1
+INFO:     127.0.0.1:43174 - "GET /test/run HTTP/1.1" 200 OK

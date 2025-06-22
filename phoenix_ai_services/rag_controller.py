@@ -25,12 +25,12 @@ def summarize_with_config(config, question, mode, top_k):
             mode=mode,
             top_k=top_k,
         )
-        if "response" not in df.columns or df.empty:
+        if "answer" not in df.columns or df.empty:
             raise ValueError("No valid response found in RAG output.")
 
         return {
             "question": question,
-            "answer": df.iloc[-1].get("response", "No answer generated."),
+            "answer": df.iloc[-1].get("answer", "No answer generated."),
             "sources": df.to_dict(orient="records"),
         }
 
