@@ -1,7 +1,7 @@
 
 # 🔥 Phoenix AI Services
 
-Unified agentic framework to run dynamic RAG APIs and utility tools like calculator, date, and python evaluator.
+Unified agentic framework to run dynamic RAG APIs and utility tools like calculator, date, and  python evaluator.
 
 # phoenix_ai_services
 
