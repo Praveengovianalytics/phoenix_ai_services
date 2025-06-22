@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "phoenix-ai-services"
-version = "0.2.4"
+version = "0.2.5.1"
 description = "Unified RAG and Tool API Service for Phoenix Agentic AI Framework"
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
