@@ -1,13 +1,14 @@
 # main entry point
+from threading import Thread
+
 import nest_asyncio
-from fastapi import FastAPI, HTTPException, Query, Body
+import uvicorn
+from fastapi import Body, FastAPI, HTTPException, Query
 from fastapi_mcp import FastApiMCP
 from pydantic import BaseModel
-from threading import Thread
-import uvicorn
 
-from phoenix_ai_services.registry import EndpointRegistry
 from phoenix_ai_services.rag_controller import summarize_with_config
+from phoenix_ai_services.registry import EndpointRegistry
 
 # Enable nested event loop
 nest_asyncio.apply()
@@ -16,6 +17,7 @@ app = FastAPI(title="Phoenix AI Services - RAG Framework")
 # In-memory endpoint registry
 registry = EndpointRegistry()
 
+
 # === Pydantic Schemas ===
 class RAGConfig(BaseModel):
     api_key: str
@@ -23,25 +25,30 @@ class RAGConfig(BaseModel):
     chat_model: str
     index_path: str
 
+
 # === Dynamic Endpoint Manager APIs ===
 @app.post("/rag/endpoints/{name}")
 def add_rag_endpoint(name: str, config: RAGConfig):
     registry.add(name, config.dict())
     return {"message": f"✅ Endpoint '{name}' registered."}
 
+
 @app.put("/rag/endpoints/{name}")
 def update_rag_endpoint(name: str, config: RAGConfig):
     registry.update(name, config.dict())
     return {"message": f"🔁 Endpoint '{name}' updated."}
+
 
 @app.delete("/rag/endpoints/{name}")
 def delete_rag_endpoint(name: str):
     registry.delete(name)
     return {"message": f"❌ Endpoint '{name}' deleted."}
 
+
 @app.get("/rag/endpoints")
 def list_rag_endpoints():
     return registry.list_all()
+
 
 # === Universal RAG Query Handler ===
 @app.get("/rag/query/{name}")
@@ -49,7 +56,7 @@ def query_rag_endpoint(
     name: str,
     question: str = Query(...),
     mode: str = Query("standard"),
-    top_k: int = Query(5)
+    top_k: int = Query(5),
 ):
     config = registry.get(name)
     if not config:
@@ -69,7 +76,7 @@ def test_run():
                 config=config,
                 question="What is the leave policy?",
                 mode="standard",
-                top_k=3
+                top_k=3,
             )
             results["RAG_Test"] = rag_response
         else:
@@ -92,13 +99,15 @@ def test_run():
 mcp = FastApiMCP(
     app,
     name="Phoenix AI Services",
-    description="Dynamic RAG Inference Service with Endpoint Registry"
+    description="Dynamic RAG Inference Service with Endpoint Registry",
 )
 mcp.mount()
+
 
 # === Launch Server
 def run_server():
     print("🚀 Starting Phoenix AI Services at http://localhost:8003")
     uvicorn.run(app, host="0.0.0.0", port=8003)
+
 
 Thread(target=run_server).start()

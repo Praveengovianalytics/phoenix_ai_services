@@ -1,6 +1,7 @@
 # endpoint registry logic
-from typing import Dict
 from threading import Lock
+from typing import Dict
+
 
 # Thread-safe in-memory registry
 class EndpointRegistry:
