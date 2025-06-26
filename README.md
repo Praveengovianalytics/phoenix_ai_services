@@ -1,5 +1,5 @@
 
-# 🔥 Phoenix AI Services
+# 🔥 Phoenix AI Services is MCP server
 
 Unified agentic framework to run dynamic RAG APIs and utility tools like calculator, date, and   python evaluator.
 
