@@ -83,9 +83,7 @@ def create_app() -> FastAPI:
         size: int = Query(10, ge=1, le=1000),
     ):
         if not ELK_BASE_URL or not ELK_INDEX:
-            raise HTTPException(
-                status_code=500, detail="ELK configuration is not set."
-            )
+            raise HTTPException(status_code=500, detail="ELK configuration is not set.")
         try:
             return query_elk(
                 base_url=ELK_BASE_URL,
@@ -138,9 +136,7 @@ def create_app() -> FastAPI:
         return registry.list_all()
 
     @mcp.tool(description="Run a RAG query against a registered endpoint.")
-    def mcp_query_rag(
-        name: str, question: str, mode: str = "standard", top_k: int = 5
-    ):
+    def mcp_query_rag(name: str, question: str, mode: str = "standard", top_k: int = 5):
         config = registry.get(name)
         if not config:
             raise ValueError(f"Endpoint '{name}' not found.")
@@ -174,7 +170,9 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    logger.info("🚀 Starting Phoenix AI Services at http://%s:%s", SERVER_HOST, SERVER_PORT)
+    logger.info(
+        "🚀 Starting Phoenix AI Services at http://%s:%s", SERVER_HOST, SERVER_PORT
+    )
     uvicorn.run(
         "phoenix_ai_services.main:app",
         host=SERVER_HOST,
